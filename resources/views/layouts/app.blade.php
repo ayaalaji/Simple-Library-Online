@@ -39,11 +39,13 @@
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
-                            <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
-                            <li><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
-                            <li><a class="nav-link" href="{{ route('books.index') }}">Manage Book</a></li>
-                            <li><a class="nav-link" href="{{ route('main-categories.index') }}">Manage Main Category</a></li>
-                            <li><a class="nav-link" href="{{ route('sub-categories.index') }}">Manage Sub Category</a></li>
+                        @can('role-list')
+                        <li><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
+                        <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
+                        <li><a class="nav-link" href="{{ route('books.index') }}">Manage Book</a></li>
+                        <li><a class="nav-link" href="{{ route('main-categories.index') }}">Manage Main Category</a></li>
+                        <li><a class="nav-link" href="{{ route('sub-categories.index') }}">Manage Sub Category</a></li>
+                        @endcan
                                       <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

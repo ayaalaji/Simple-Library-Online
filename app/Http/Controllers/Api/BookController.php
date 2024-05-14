@@ -6,6 +6,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiBookRequest;
 use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\returnSelf;
@@ -14,7 +15,7 @@ class BookController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('manager')->only('store');
+        $this->middleware('manager')->except('index','show');
     }
     /**
      * Display a listing of the resource.
@@ -35,10 +36,8 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        
-        
         $book=new Book();
         $book->name=$request->name;
         $book->author=$request->author;
@@ -61,16 +60,28 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ApiBookRequest $request, Book $book)
     {
-        //
+        $book->name=$request->name??$book->name;
+        $book->author=$request->author??$book->author;
+        $book->year=$request->year??$book->year;
+        $book->sub_category_id=$request->sub_category_id??$book->sub_category_id;
+
+        $book->save();
+
+        return response()->json($book,200);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return response()->json(
+            [
+                'message' =>'you delete book successfuly'
+            ],200);
     }
 }
